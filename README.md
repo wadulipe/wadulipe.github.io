@@ -1,2 +1,2 @@
-# wadulipe.githuhb.io
+# wadulipe.github.io
 good joke
