@@ -1,0 +1,2 @@
+export default `html{cursor:url("./media/cursor-FH2LZK4K.png"),auto;white-space:pre-line}.centered{text-align:center}
+`;
