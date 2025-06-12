@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
@@ -7,49 +7,37 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App implements AfterViewInit, OnDestroy  {
+export class App implements AfterViewInit {
   @ViewChild('boomboom') audioRef!: ElementRef<HTMLAudioElement>;
   
   protected title = 'Bienvenue chez Michel Dupuis Entreprises !';
   text1= 'Notre spécialité : monter des chapiteaux et faire beaucoup de bruit';
   text2= 'Choisir Michel Dupuis c\'est aussi choisir de favoriser les artisans et entrepreneurs locaux.\nAvec nous, vous faîtes le bon choix !';
 
-  private interactionHandler = () => {
-    const audio = this.audioRef.nativeElement;
-
-    audio.play().then(() => {
-      audio.muted = false;
-    }).catch(err => {
-      console.log('Lecture bloquée :', err);
-    });
-
-    this.removeInteractionListeners();
-  };
-
-  private keydownHandler = (event: KeyboardEvent) => {
-    if (event.code === 'Space' || event.code === 'Enter') {
-      this.interactionHandler();
-    }
-  };
 
   ngAfterViewInit() {
-    document.addEventListener('click', this.interactionHandler);
-    document.addEventListener('touchstart', this.interactionHandler);
-    document.addEventListener('scroll', this.interactionHandler);
-    document.addEventListener('keydown', this.keydownHandler);
-    document.body.addEventListener('mouseenter', this.interactionHandler);
-  }
+    const audio = this.audioRef.nativeElement;
 
-  ngOnDestroy() {
-    this.removeInteractionListeners();
-  }
+    const interactionHandler = () => {
+    
+      audio.play().then(() => {
+          // Si lecture ok, on enlève le mute pour avoir le son
+          audio.muted = false;
+        }).catch((err) => {
+          console.log('Lecture bloquée :', err);
+        });
 
-  private removeInteractionListeners() {
-    document.removeEventListener('click', this.interactionHandler);
-    document.removeEventListener('touchstart', this.interactionHandler);
-    document.removeEventListener('scroll', this.interactionHandler);
-    document.removeEventListener('keydown', this.keydownHandler);
-    document.body.removeEventListener('mouseenter', this.interactionHandler);
-  }
+      // On enlève les listeners pour ne pas relancer plusieurs fois
+      document.removeEventListener('click', interactionHandler);
+      document.removeEventListener('touchstart', interactionHandler);
+      document.removeEventListener('scroll', interactionHandler);
+      document.body.addEventListener('mouseenter', interactionHandler);
+    };
 
+    // On ajoute les événements qui déclencheront la lecture
+    document.addEventListener('click', interactionHandler);
+    document.addEventListener('touchstart', interactionHandler);
+    document.addEventListener('scroll', interactionHandler);
+    document.body.removeEventListener('mouseenter', interactionHandler);
+  }
 }
