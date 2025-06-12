@@ -32,7 +32,7 @@ export class App implements AfterViewInit {
       document.removeEventListener('touchstart', interactionHandler);
       document.removeEventListener('touchmove', interactionHandler);
       document.removeEventListener('scroll', interactionHandler);
-      document.body.removeEventListener('mouseenter', interactionHandler);
+      document.body.addEventListener('mouseenter', interactionHandler);
     };
 
     // On ajoute les événements qui déclencheront la lecture
@@ -40,6 +40,6 @@ export class App implements AfterViewInit {
     document.addEventListener('touchstart', interactionHandler);
     document.addEventListener('touchmove', interactionHandler);
     document.addEventListener('scroll', interactionHandler);
-    document.body.addEventListener('mouseenter', interactionHandler);
+    document.body.removeEventListener('mouseenter', interactionHandler);
   }
 }
